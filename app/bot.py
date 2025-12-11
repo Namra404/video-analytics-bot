@@ -36,7 +36,12 @@ async def handle_message(message: Message):
         if not isinstance(result, (int, float)):
             raise ValueError("Result is not numeric")
 
-        await message.answer(str(result))
+        if isinstance(result, float) and result.is_integer():
+            normalized = str(int(result))
+        else:
+            normalized = str(result)
+
+        await message.answer(normalized)
     except Exception as e:
         logger.exception("Error while handling message: %s", e)
         await message.answer("Не смог понять или посчитать твой запрос(")
